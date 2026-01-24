@@ -386,9 +386,9 @@ export def CheckForMacro(): void
 
     # Delete the pattern
     cursor(line('.'), pattern_start + 1)
-    exec 'normal! d' .. len('/buf all') .. 'l'
+    execute 'normal! d' .. len('/buf all') .. 'l'
 
-    # Generate list of tabs with #file: prefix, excluding current buffer
+    # Generate list of buffers with #file: prefix, excluding current buffer
     var buf_list: list<string> = []
     for i in range(1, bufnr('$'))
       var filename: string = bufname(i)
@@ -401,9 +401,9 @@ export def CheckForMacro(): void
 
     if len(buf_list) > 0
       var bufs_text: string = join(buf_list, "\n") .. "\n"
-      exec 'normal! i' .. bufs_text
+      execute 'normal! i' .. bufs_text
     else
-      exec "normal! iNo buffers found\n"
+      execute "normal! iNo buffers found\n"
     endif
 
     # Position cursor on the empty line
