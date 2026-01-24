@@ -379,6 +379,35 @@ export def CheckForMacro(): void
 
     # Position cursor on the empty line
     cursor(line('.'), 1)
+
+  elseif current_line =~# '/buf all'
+    # Get the position where the pattern starts
+    var pattern_start: number = match(before_cursor, '/buf all')
+
+    # Delete the pattern
+    cursor(line('.'), pattern_start + 1)
+    exec 'normal! d' .. len('/buf all') .. 'l'
+
+    # Generate list of tabs with #file: prefix, excluding current buffer
+    var buf_list: list<string> = []
+    for i in range(1, bufnr('$'))
+      var filename: string = bufname(i)
+      # Only add if it's not the current buffer and has a filename
+      if filename !=# '' && filename !~# 'CopilotChat'
+        # Use the relative path format instead of just the base filename
+        add(buf_list, $'#file: {filename}')
+      endif
+    endfor
+
+    if len(buf_list) > 0
+      var bufs_text: string = join(buf_list, "\n") .. "\n"
+      exec 'normal! i' .. bufs_text
+    else
+      exec "normal! iNo buffers found\n"
+    endif
+
+    # Position cursor on the empty line
+    cursor(line('.'), 1)
   elseif current_line =~# '#file:'
     if completion_active == 1 && !pumvisible()
       completion_active = 0
