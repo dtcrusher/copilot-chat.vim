@@ -394,7 +394,9 @@ export def CheckForMacro(): void
       var filename: string = bufname(i)
       # Only add if it's not the current buffer, has a filename and is listed
       echom buflisted(i) > 0
-      if buflisted(i) > 0 && filename !=# '' && filename !~# 'CopilotChat'
+ 			# Only add if it's not the current buffer, has a filename, is listed,
+			# and is either readable or a directory
+			if buflisted(i) > 0 && filename !=# '' && (filereadable(filename) || isdirectory(filename)) && filename !~# 'CopilotChat'
         # Use the relative path format instead of just the base filename
         add(buf_list, $'#file: {filename}')
       endif
