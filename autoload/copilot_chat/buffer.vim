@@ -3,7 +3,7 @@ scriptencoding utf-8
 
 import autoload 'copilot_chat/config.vim' as config
 
-var colors_gui: list<string> = ['#33FF33', '#4DFF33', '#66FF33', '#80FF33', '#99FF33', '#B3FF33', '#CCFF33', '#E6FF33', '#FFFF33']
+var colors_gui: list<string> = ['#F5CD79', '#F5CD79', '#F19066', '#F19066', '#FC5C65', '#FC5C65']
 var colors_cterm: list<number> = [46, 118, 154, 190, 226, 227, 228, 229, 230]
 var color_index: number = 0
 var chat_count: number = 1
@@ -126,7 +126,7 @@ export def AddInputSeparator(): void
 enddef
 
 export def WaitingForResponse(): void
-  AppendMessage('Waiting for response')
+  AppendMessage('Thinking')
   #waiting_timer = timer_start(500, { -> UpdateWaitingDots()}, {'repeat': -1})
   waiting_timer = timer_start(500, function('UpdateWaitingDots'), {'repeat': -1})
 enddef
@@ -145,10 +145,10 @@ def UpdateWaitingDots(timer: any): number
   endif
 
   var current_text = lines[0]
-  if current_text =~? '^Waiting for response'
+  if current_text =~? '^Thinking'
       var dots = len(matchstr(current_text, '\..*$'))
       var new_dots = (dots % 3) + 1
-      setbufline(g:copilot_chat_active_buffer, '$', $'Waiting for response{repeat('.', new_dots)}')
+      setbufline(g:copilot_chat_active_buffer, '$', $'Thinking{repeat('.', new_dots)}')
     color_index = (color_index + 1) % len(colors_gui)
     execute 'highlight CopilotWaiting guifg=' .. colors_gui[color_index] .. ' ctermfg=' .. colors_cterm[color_index]
   endif
@@ -194,7 +194,7 @@ export def AppendMessage(message: any): void
 enddef
 
 export def WelcomeMessage(): void
-  appendbufline(g:copilot_chat_active_buffer, 0, 'Welcome to Copilot Chat! Type your message below:')
+  appendbufline(g:copilot_chat_active_buffer, 0, 'Copilot Chat:')
   AddInputSeparator()
 enddef
 

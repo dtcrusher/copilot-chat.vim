@@ -1,11 +1,11 @@
 vim9script
 scriptencoding utf-8
 
-syntax match CopilotWelcome /^Welcome to Copilot Chat!.*$/
+syntax match CopilotWelcome /^Copilot Chat.*$/
 syntax match CopilotSeparatorIcon /^/
 syntax match CopilotSeparatorIcon /^/
 syntax match CopilotSeparatorLine / ━\+$/
-syntax match CopilotWaiting /Responding\.*$/
+syntax match CopilotWaiting /Thinking\.*$/
 syntax match CopilotPrompt /^> .*/
 syntax match CopilotFiles /^#file:.*/
 
